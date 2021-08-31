@@ -1,28 +1,40 @@
-from django.db import models
 import uuid
+
+from django.db import models
+
+
 # Create your models here.
-
-
 class List(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, help_text="List of tasks")
+    name = models.CharField(max_length=50, help_text="Tasks list name")
 
     def __str__(self):
         return self.name
 
 
 class Task(models.Model):
-    """
-    Simple task model
-    """
 
-    # Fields
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), help_text="Unique ID for each task")
-    name = models.CharField(max_length=50, help_text="Enter task name", blank=False)
-    description = models.CharField(max_length=250, help_text="Enter task description", blank=True)
-    created_at = models.DateTimeField(auto_created=True)
-    status = models.BooleanField(help_text="task complete status")
-    list = models.ManyToManyField(List, help_text="All lists where this task would be displayed")
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Task unique ID", unique=True)
+    name = models.CharField(max_length=50, help_text="Input task name here")
+    description = models.TextField(blank=True, help_text="Task description")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    attachments = models.FileField(blank=True, upload_to='tasks/attachments/%Y/%m/%d/')
+    STATUS = [
+        ("Do", "Done"),
+        ("Ip", "In progress"),
+        ("Ns", "Not started"),
+    ]
+    in_lists = models.ManyToManyField(List)
+    status = models.CharField(max_length=2, choices=STATUS, default="Ns")
+
+    def to_short_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            # 'inLists': self.in_lists,
+            'status': self.status
+        }
 
     def __str__(self):
         return self.name

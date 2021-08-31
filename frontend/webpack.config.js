@@ -1,12 +1,15 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const devMode = (process.env.BUILD || '') !== 'production'
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
-    path: path.join(__dirname, "dist"),
-    publicPath: '/',
-    filename: "index_bundle.js"
+    // path: path.join(__dirname, "dist"),
+    path: path.resolve('./target/pw'),
+    publicPath: devMode ? '/' : undefined,
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -74,9 +77,16 @@ module.exports = {
     historyApiFallback: true,
   },
   plugins: [
+    devMode &&
     new HtmlWebpackPlugin({
       template: "./src/index.html"
     })
+  //   new CopyPlugin({
+  //     patterns: [{
+  //       from: 'static',
+  //       to  : '..',
+  //     }],
+  //   }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

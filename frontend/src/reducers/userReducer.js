@@ -1,17 +1,32 @@
 import React from 'react'
-import { fromJS } from 'immutable'
+import {fromJS} from 'immutable'
+import {types} from "@reducers/common";
 
 
 export const userInitialState = fromJS({
   username: null,
   email: null,
-  tasks: {},
+  tasks: [],
+  query: {
+    total: 0,
+    pages: 0,
+    currentPage: 0
+  }
 })
 
-export const userReducer = (state={}, action) => {
+export const userReducer = (state = {}, action) => {
   console.log('reducer-stages', action)
 
-  switch(action.type){
+  switch (action.type) {
+    case types.USER__ADD_TASKS:
+      console.log(action.tasks)
+      return state
+        .mergeDeepIn(['tasks'], fromJS(action.tasks))
+        .set('query', fromJS({
+          total: action.total,
+          pages: action.pages,
+          currentPage: action.page,
+        }))
     default:
       return state
   }

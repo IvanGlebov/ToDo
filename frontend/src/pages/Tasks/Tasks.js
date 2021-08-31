@@ -1,8 +1,10 @@
 import React from 'react'
-import { withTranslation } from 'react-i18next'
-import { connect } from 'react-redux'
-import { TasksSidebar } from '@components'
+import {withTranslation} from 'react-i18next'
+import {connect} from 'react-redux'
+import {TasksSidebar} from '@components'
 import styled from "styled-components";
+import {doFetchTasks} from "@reducers/userActions";
+import {Button} from "@ui";
 
 const Task = styled.div`
   display: flex;
@@ -27,20 +29,44 @@ const Row = styled.div`
 `
 
 export default withTranslation()(connect(
-
+  (store) => ({
+    tasks: store.user.get('tasks').toJS()
+  }),
+  (dispatch) => ({
+    doFetchTasks: (page, successChecker, errorChecker) => doFetchTasks(dispatch, page, successChecker, errorChecker)
+  })
 )(class Tasks extends React.Component {
 
+  componentDidMount() {
+    this.props.doFetchTasks(1,
+      (res) => {
+        console.log(res)
+        return true
+      }, null)
+  }
 
   render() {
+    // console.log('test')
+    // console.log(this.props.tasks)
     return (
       <Row>
-        <Col style={{ maxWidth: '290px' }}>
-          <TasksSidebar />
+        <Col style={{maxWidth: '290px'}}>
+          <TasksSidebar/>
         </Col>
-        <Col style={{ margin: '0  15px' }}>
-          <Task>
-            simple task
-          </Task>
+        <Col style={{margin: '0  15px'}}>
+          <Button onClick={()=>this.props.doFetchTasks(1,
+            (res) => {
+              console.log(res)
+              return true
+            }, null)}>Refresh</Button>
+          { this.props.tasks?.map((item, index) => {
+            console.log(item)
+            return (<Task key={item?.name + index}>{item?.name}</Task>)
+          })
+          }
+          {/*<Task>*/}
+          {/*  simple task*/}
+          {/*</Task>*/}
         </Col>
       </Row>
     )

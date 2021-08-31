@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>IotaDo</title>
+    <script>
+        {% autoescape off %}
+        window.globals = {
+            debug: {{ debug }}
+        }
+        {% endautoescape %}
+    </script>
+{#    {% if devBundle %}#}
+    <script type="text/javascript" src="{% static 'pw/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'pw/main.css' %}" />
+</head>
+<body id="root">
+
+</body>
+</html>

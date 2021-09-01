@@ -33,3 +33,14 @@ def list_tasks(request, page=1):
         'pages': tasks.count() // page_size,
         'page': page+1
     })
+
+
+def add_task(request):
+    print(request)
+    new_task = Task(name=request.POST.get('name'))
+    new_task.description = request.POST.get('description')
+
+    new_task.save()
+    return JsonResponse({
+        'status': 'task-added'
+    })

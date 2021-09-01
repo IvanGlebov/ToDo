@@ -30,7 +30,7 @@ const Row = styled.div`
 
 export default withTranslation()(connect(
   (store) => ({
-    tasks: store.user.get('tasks').toJS()
+    tasks: store.user.get('tasks').toJS(),
   }),
   (dispatch) => ({
     doFetchTasks: (page, successChecker, errorChecker) => doFetchTasks(dispatch, page, successChecker, errorChecker)
@@ -40,21 +40,19 @@ export default withTranslation()(connect(
   componentDidMount() {
     this.props.doFetchTasks(1,
       (res) => {
-        console.log(res)
+        // console.log(res)
         return true
       }, null)
   }
 
   render() {
-    // console.log('test')
-    // console.log(this.props.tasks)
     return (
       <Row>
         <Col style={{maxWidth: '290px'}}>
           <TasksSidebar/>
         </Col>
         <Col style={{margin: '0  15px'}}>
-          <Button onClick={()=>this.props.doFetchTasks(1,
+          <Button color='black'  onClick={()=>this.props.doFetchTasks(1,
             (res) => {
               console.log(res)
               return true
@@ -64,9 +62,9 @@ export default withTranslation()(connect(
             return (<Task key={item?.name + index}>{item?.name}</Task>)
           })
           }
-          {/*<Task>*/}
-          {/*  simple task*/}
-          {/*</Task>*/}
+          <Task>
+            simple static task
+          </Task>
         </Col>
       </Row>
     )

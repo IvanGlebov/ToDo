@@ -17,7 +17,11 @@ export const reportError = (error) => {
 
 export const fetchWrapper = (dispatch, url, event, opts, successChecker) => {
   // console.log(`fetching ${url}`)
-  return fetch(`http://localhost:8000/${url}`, opts)
+  const use_hot_dev = true
+  if(use_hot_dev){
+    url = `http://localhost:8000/${url}`
+  }
+  return fetch(url, opts)
     .then(res => {
       if (res.status >= 400)
         throw new Error(JSON.stringify(res.json()))

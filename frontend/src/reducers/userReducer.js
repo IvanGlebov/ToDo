@@ -19,7 +19,6 @@ export const userReducer = (state = {}, action) => {
 
   switch (action.type) {
     case types.USER__ADD_TASKS:
-      console.log(action.tasks)
       return state
         .mergeDeepIn(['tasks'], fromJS(action.tasks))
         .set('query', fromJS({
@@ -27,6 +26,8 @@ export const userReducer = (state = {}, action) => {
           pages: action.pages,
           currentPage: action.page,
         }))
+
+
     default:
       return state
   }

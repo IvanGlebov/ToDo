@@ -4,9 +4,13 @@ from django.urls import path, re_path, include
 
 import todo.views as views
 
+tasksApiPatterns = [
+    path('list', views.list_tasks),
+    path('add', views.add_task)
+]
 
 apiPatterns = [
-    path('tasks/list', views.list_tasks)
+    path('tasks/', include(tasksApiPatterns))
 ]
 
 urlpatterns = [

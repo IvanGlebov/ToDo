@@ -1,8 +1,8 @@
-import { fetchWrapper, types } from "@reducers/common"
+import {fetchWrapper, types} from "@reducers/common"
 // import Cookies from 'js-cookie'
 
-export const doFetchTasks = (dispatch, page=1, successChecker, errorChecker) => {
-  console.log('fetching tasks')
+export const doFetchTasks = (dispatch, page = 1, successChecker, errorChecker) => {
+  console.log('fetch tasks')
   fetchWrapper(
     dispatch,
     'api/tasks/list',
@@ -10,7 +10,25 @@ export const doFetchTasks = (dispatch, page=1, successChecker, errorChecker) => 
     {
       method: 'GET',
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    },
+    successChecker
+  ).then(errorChecker)
+}
+
+export const addTask = (dispatch, name, description, successChecker, errorChecker) => {
+  fetchWrapper(
+    dispatch,
+    'api/tasks/add',
+    undefined,
+    {
+      method: 'POST',
+      body: {
+        'name': name,
+        'description': description
+      },
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     },
